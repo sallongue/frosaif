@@ -161,5 +161,10 @@
         android:textSize="14sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventDetails"
+        android:layout_centerInParent="true"
+        android:text="Enregistrer votre Evènement"/>
 </RelativeLayout>
