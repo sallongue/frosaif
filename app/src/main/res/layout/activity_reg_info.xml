@@ -1,0 +1,165 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="eu.agriapi.www.frosaif.DisplayreginfoActivity">
+
+    <TextView
+        android:id="@+id/eventPageName"
+        android:text="Enregistrer un évènement"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp" />
+    <TextView
+        android:id="@+id/eventlatName"
+        android:text="Latitude : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/eventPageName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/eventLat"
+        android:hint="Latitude"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/eventPageName"
+        android:layout_toRightOf="@id/eventlatName"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/eventLngName"
+        android:text="Longitude : "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_below="@id/eventlatName"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/eventLng"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/eventlatName"
+        android:layout_toRightOf="@id/eventLngName"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/eventAddrName"
+        android:text="Adresse : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventLng"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/eventAddr"
+        android:gravity="center_vertical" />
+    <EditText
+        android:id="@+id/eventAddr"
+        android:hint="Adresse"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventLng"
+        android:layout_toRightOf="@id/eventAddrName"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/eventIdentificationName"
+        android:text="Identité : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/eventAddr"
+        android:layout_alignBottom="@+id/eventIdentification"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/eventIdentification"
+        android:hint="Nom, Prénom ou raison sociale"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventAddr"
+        android:layout_toRightOf="@id/eventIdentificationName"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/eventEmailAddrName"
+        android:text="Adresse Email : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/eventIdentification"
+        android:layout_alignBottom="@+id/eventEmailAddr"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/eventEmailAddr"
+        android:hint="Votre adresse email"
+        android:inputType="textEmailAddress"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/eventIdentification"
+        android:layout_toRightOf="@id/eventEmailAddrName"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/eventPhoneNbName"
+        android:text="Téléphone : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/eventEmailAddr"
+        android:layout_alignBottom="@+id/eventPhoneNb"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Votre numéro de Téléphone"
+        android:id="@+id/eventPhoneNb"
+        android:inputType="phone"
+        android:layout_below="@id/eventEmailAddr"
+        android:layout_toRightOf="@id/eventPhoneNbName"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"/>
+    <Spinner
+        android:id="@+id/role_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/eventPhoneNb"
+        android:layout_marginLeft="10dp" />
+    <Spinner
+        android:id="@+id/event_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/role_spinner"
+        android:layout_below="@id/eventPhoneNb"
+        android:layout_marginRight="10dp" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Details:Méthode,support,hauteur,nid primaire..."
+        android:id="@+id/eventDetails"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/event_spinner"
+        android:textSize="14sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+</RelativeLayout>

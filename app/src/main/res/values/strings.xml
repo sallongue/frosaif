@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">frosaif</string>
+    <string name="title_activity_maps">Frosaif</string>
+    <string name="txt_submit_button">Signalement</string>
+    <string name="default_marker">Paris</string>
+    <string name="no_marker_msg">Vous n\'avez pas indiqué de position pour l\'évènement</string>
+
+    <string-array name="role_array">
+        <item>Votre Rôle</item>
+        <item>Referent</item>
+        <item>Societe 3D</item>
+        <item>Particulier</item>
+        <item>Service Public</item>
+        <item>Autre</item>
+    </string-array>
+
+    <string-array name="event_array">
+        <item>Evènement</item>
+        <item>Destruction</item>
+        <item>Signalement</item>
+        <item>Particulier</item>
+        <item>Incident</item>
+        <item>Information</item>
+    </string-array>
+</resources>
