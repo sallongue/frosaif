@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
     <Button
         android:id="@+id/button"
@@ -16,6 +16,7 @@
         android:text="@string/txt_submit_button"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:onClick="registerEventInformation"/>
+        android:onClick="registerEventInformation"
+        android:layout_marginBottom="10dp" />
 </RelativeLayout>
 

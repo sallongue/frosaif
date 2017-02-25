@@ -154,7 +154,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Details:Méthode,support,hauteur,nid primaire..."
+        android:hint="Details de l'évènement: Méthode,support,hauteur,nid primaire..."
         android:id="@+id/eventDetails"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/event_spinner"

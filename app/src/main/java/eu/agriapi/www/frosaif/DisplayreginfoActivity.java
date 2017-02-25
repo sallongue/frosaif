@@ -18,8 +18,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Locale;
 
-// Rajouter des propriétés sur les edittext pour que le clavier soit adapté au type
-// de données
+// Rajouter un toast au cas ou le réseau ne soit pas dispo et indiquer qu'il faut le rsx
+// en pluson pourrait avoir une sauvegarde d'un point en cas de zone hors connexion
+// pour un enregistrement plus tard
 
 /**
  * Created by Seb on 16/02/2017.
