@@ -166,5 +166,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventDetails"
         android:layout_centerInParent="true"
-        android:text="Enregistrer votre Evènement"/>
+        android:text="Enregistrer votre Evènement"
+        android:onClick="commitEventInformation"/>
 </RelativeLayout>
