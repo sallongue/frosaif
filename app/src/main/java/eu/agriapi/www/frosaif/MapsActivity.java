@@ -1,8 +1,11 @@
 package eu.agriapi.www.frosaif;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -92,7 +95,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(notreDame));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notreDame, 10));
         // les fonctions suivantes permettent d'ajouter le bouton GPS pour aller directement à maposition
         // a besoin d'être retravailler pour etre propre
         // la permission est obtenu une fois mais il faut relancer l'appli pour voir apparaitre
@@ -143,15 +146,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
     public void registerEventInformation(View view) {
         if(mylatLng == null) {
             Toast.makeText(getApplicationContext(), getString(R.string.no_marker_msg), Toast.LENGTH_LONG).show();
         } else {
-            Bundle args = new Bundle();
-            args.putParcelable("eventPosition", mylatLng);
-            Intent intent = new Intent(this, DisplayreginfoActivity.class);
-            intent.putExtra("bundle", args);
-            startActivity(intent);
+            if(!isOnline()){
+                Toast.makeText(getApplicationContext(), "Attention vous n'êtes pas connecté (data ou wifi),"
+                        + " vos informations ne pourront pas être sauvegardée", Toast.LENGTH_LONG).show();
+            } else {
+                Bundle args = new Bundle();
+                args.putParcelable("eventPosition", mylatLng);
+                Intent intent = new Intent(this, DisplayreginfoActivity.class);
+                intent.putExtra("bundle", args);
+                startActivity(intent);
+            }
         }
     }
+
+
 }

@@ -100,6 +100,13 @@ public class DisplayreginfoActivity extends Activity{
         // Apply the adapter to the spinner
         spinnerEvent.setAdapter(adapterEvent);
 
+        // TEMPORAIRE
+        EditText enventIdT = (EditText) findViewById(R.id.eventIdentification);
+        enventIdT.setText("Alain Goulnik");
+        EditText enventEADT = (EditText) findViewById(R.id.eventEmailAddr);
+        enventEADT.setText("alain.goulnik@frosaif.fr");
+        EditText enventPhoneT = (EditText) findViewById(R.id.eventPhoneNb);
+        enventPhoneT.setText("0634353637");
     }
 
     public void commitEventInformation(View view){

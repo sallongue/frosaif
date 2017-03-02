@@ -16,10 +16,15 @@
 
     <string-array name="event_array">
         <item>Evènement</item>
-        <item>Destruction</item>
-        <item>Signalement</item>
-        <item>Particulier</item>
+        <item>Signalement Nid primaire</item>
+        <item>Signalement Nid secondaire</item>
+        <item>Destruction Nid primaire</item>
+        <item>Destruction Nid secondaire</item>
+        <item>Descente du nid apres destruction</item>
         <item>Incident</item>
+        <item>Attaque de rucher</item>
+        <item>Attaque de personne</item>
+        <item>Frelon isolé</item>
         <item>Information</item>
     </string-array>
 </resources>
