@@ -14,11 +14,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
 import com.google.android.gms.drive.internal.StringListResponse;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 // Rajouter un toast au cas ou le réseau ne soit pas dispo et indiquer qu'il faut le rsx
 // en pluson pourrait avoir une sauvegarde d'un point en cas de zone hors connexion
@@ -42,6 +56,9 @@ public class DisplayreginfoActivity extends Activity{
     private String evRoleStr= new String("");
     private String evEventStr= new String("");
     private String evDetailStr= new String("");
+    private String evEventCode= new String("");
+
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +143,101 @@ public class DisplayreginfoActivity extends Activity{
         Toast.makeText(getApplicationContext(), evPosLatStr+"\n"+evPosLngStr+"\n"+evAddrStr+"\n"+
                 evIdStr+"\n"+evEmailStr+"\n"+evPhoneStr+"\n"+evRoleStr+"\n"+evEventStr+"\n"+
                 evDetailStr, Toast.LENGTH_LONG).show();
+        // One HAVE to create async to send information
+
+
+
+        // translate event into code
+
+        switch (evEventStr) {
+            case "Signalement Nid primaire":
+                evEventCode = "SNP"; break;
+            case"Signalement Nid secondaire":
+                evEventCode = "SNS"; break;
+            case"Destruction Nid primaire":
+                evEventCode = "DNP"; break;
+            case"Destruction Nid secondaire":
+                evEventCode = "DNS"; break;
+            case"Descente du nid apres destruction":
+                evEventCode = "DNAD"; break;
+            case"Incident":
+                evEventCode = "INC"; break;
+            case"Attaque de rucher":
+                evEventCode = "ADR"; break;
+            case"Attaque de personne":
+                evEventCode = "ADP"; break;
+            case"Frelon isolé":
+                evEventCode = "FRI"; break;
+            case"Information":
+                evEventCode = "INF"; break;
+        }
+
+        String addUrl = "http://www.frosaif.fr/zandroid.php";
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                addUrl, null,  new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response){
+                    try{
+                        String status = response.getString("status");
+                        String total = response.getString("total");
+                        Toast.makeText(getApplicationContext(),status + "   " + total, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+        });
+        //requestQueue.add(jsonObjectRequest);
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext_dev.php",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                        if (response.contains("success")){
+                            Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("lon", evPosLngStr);
+                params.put("lat", evPosLatStr);
+                params.put("address",evAddrStr);
+                params.put("event", evEventCode);
+                params.put("role", evRoleStr);
+                params.put("email",evEmailStr);
+                params.put("nom", evIdStr);
+                params.put("tel", evPhoneStr);
+                params.put("detail",evAddrStr);
+                params.put("android","1");
+
+                return params;
+            }
+        };
+        requestQueue.add(postRequest);
+
+
+
     }
 
 }
