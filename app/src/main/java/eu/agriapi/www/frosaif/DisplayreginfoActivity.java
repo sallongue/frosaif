@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,7 @@ import java.util.Map;
 /**
  * Created by Seb on 16/02/2017.
  */
-public class DisplayreginfoActivity extends Activity{
+public class DisplayreginfoActivity extends AppCompatActivity {
 
     //private class myEvent2reg {
 
@@ -64,6 +66,9 @@ public class DisplayreginfoActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_info);
+
+        //Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(myToolbar);
 
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         LatLng eventPosition = bundle.getParcelable("eventPosition");
@@ -203,6 +208,12 @@ public class DisplayreginfoActivity extends Activity{
                         Log.d("Response", response);
                         if (response.contains("success")){
                             Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
+                            int ind = response.indexOf("tag");
+                            int tagLength = 6;
+                            // json response is "tag":"DDD444"
+                            // TODO use json object to get the tag value
+                            String tagStr = response.substring(ind+6, ind+6+tagLength);
+                            Log.d("mytag ", tagStr);
                         } else {
                             Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement", Toast.LENGTH_LONG).show();
                         }
@@ -228,7 +239,7 @@ public class DisplayreginfoActivity extends Activity{
                 params.put("email",evEmailStr);
                 params.put("nom", evIdStr);
                 params.put("tel", evPhoneStr);
-                params.put("detail",evAddrStr);
+                params.put("details",evDetailStr);
                 params.put("android","1");
 
                 return params;
