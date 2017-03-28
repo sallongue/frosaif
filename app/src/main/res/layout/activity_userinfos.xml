@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/uIIdentificationName"
+        android:text="Identité : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:id="@+id/uIIdentification"
+        android:hint="Nom, Prénom ou raison sociale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uIIdentificationName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/uIEmailAddrName"
+        android:text="Adresse Email : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/uIIdentification"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/uIEmailAddr"
+        android:hint="Votre adresse email"
+        android:inputType="textEmailAddress"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/uIEmailAddrName"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/uIPhoneNbName"
+        android:text="Téléphone : "
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/uIEmailAddr"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Votre numéro de Téléphone"
+        android:id="@+id/uIPhoneNb"
+        android:inputType="phone"
+        android:layout_below="@id/uIPhoneNbName"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"/>
+    <Spinner
+        android:id="@+id/uIrole_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/uIPhoneNb"
+        android:layout_marginLeft="10dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uIrole_spinner"
+        android:layout_centerInParent="true"
+        android:text="@string/user_info_reg"
+        android:onClick="commitUserInfos"
+        android:gravity="center"/>
+
+</RelativeLayout>

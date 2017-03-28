@@ -4,6 +4,10 @@
     <string name="txt_submit_button">Signalement</string>
     <string name="default_marker">Paris</string>
     <string name="no_marker_msg">Vous n\'avez pas indiqué de position pour l\'évènement</string>
+    <string name="user_info">Informations utilisateur</string>
+    <string name="user_info_reg">Enregistrer Infos utilisateur</string>
+    <string name="about">A propos</string>
+    <string name="fileSettings">frosaif.txt</string>
 
     <string-array name="role_array">
         <item>Votre Rôle</item>
@@ -27,4 +31,13 @@
         <item>Frelon isolé</item>
         <item>Information</item>
     </string-array>
+
+    <string name="about_text"><![CDATA[
+
+    <br/>Cette application permet de collecter divers informations concernant le frelon asiatique.
+    <br/>Les informations sont a destination de l\'association a des fins d\'analyser de l\'etendu des degats.
+    <br/>
+    <br/>Licence: Ce logiciel est libre d\'utilisation.
+    ]]>
+    </string>
 </resources>

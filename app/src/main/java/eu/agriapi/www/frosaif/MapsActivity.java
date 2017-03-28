@@ -10,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,8 +45,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 // Si on clique sur une autre position alors qu'il existe déjà un autre marker, le clique
 // d'après efface le marker courant et recrée un nouveau marker
 
-//BUG
-// QUAND on deplace le marker ca ne remet pas à jour lat/lng
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

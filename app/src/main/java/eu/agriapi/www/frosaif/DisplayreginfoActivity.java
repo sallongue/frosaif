@@ -1,6 +1,7 @@
 package eu.agriapi.www.frosaif;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,6 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,6 +36,10 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -63,10 +72,87 @@ public class DisplayreginfoActivity extends AppCompatActivity {
     RequestQueue requestQueue;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.setting_appbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.userInfos:
+                //Toast.makeText(getApplicationContext(), "Info user", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.about:
+                //Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_LONG).show();
+                Intent intent2 = new Intent(this, HelpActivity.class);
+                startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // in inStr string search return toto where str:toto;
+    public String searchKW(String str, String inStr) {
+        int idxStart = inStr.indexOf(str);
+        int idxStop = inStr.indexOf(";", idxStart + str.length() + 1);
+        String ret = inStr.substring(idxStart + str.length() + 1, idxStop);
+        //Toast.makeText(getApplicationContext(), ret, Toast.LENGTH_LONG).show();
+        return ret;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+
+
+        String filename = "frosaif.txt";
+
+        try {
+            FileInputStream inStream = openFileInput(filename);
+            InputStreamReader inputStrReader = new InputStreamReader(inStream);
+            BufferedReader bufReader = new BufferedReader(inputStrReader);
+
+            StringBuilder finalString = new StringBuilder();
+            String oneLine;
+
+            while ((oneLine = bufReader.readLine()) != null) {
+                finalString.append(oneLine);
+            }
+
+            bufReader.close();
+            inStream.close();
+            inputStrReader.close();
+            String id = searchKW("ID",finalString.toString());
+            String email = searchKW("EMAIL", finalString.toString());
+            String tel = searchKW("TEL",finalString.toString());
+            String role = searchKW("ROLE",finalString.toString());
+            EditText enventIdT = (EditText) findViewById(R.id.eventIdentification);
+            enventIdT.setText(id);
+            EditText enventEADT = (EditText) findViewById(R.id.eventEmailAddr);
+            enventEADT.setText(email);
+            EditText enventPhoneT = (EditText) findViewById(R.id.eventPhoneNb);
+            enventPhoneT.setText(tel);
+            Toast.makeText(getApplicationContext(), "id: "+ id + " email: "+ email + " tel: "+ tel +" role: "+role, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_info);
 
+
+        
         //Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         //setSupportActionBar(myToolbar);
 
@@ -123,12 +209,12 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         spinnerEvent.setAdapter(adapterEvent);
 
         // TEMPORAIRE
-        EditText enventIdT = (EditText) findViewById(R.id.eventIdentification);
-        enventIdT.setText("Alain Goulnik");
-        EditText enventEADT = (EditText) findViewById(R.id.eventEmailAddr);
-        enventEADT.setText("alain.goulnik@frosaif.fr");
-        EditText enventPhoneT = (EditText) findViewById(R.id.eventPhoneNb);
-        enventPhoneT.setText("0634353637");
+        //EditText enventIdT = (EditText) findViewById(R.id.eventIdentification);
+        //enventIdT.setText("Alain Goulnik");
+        //EditText enventEADT = (EditText) findViewById(R.id.eventEmailAddr);
+        //enventEADT.setText("alain.goulnik@frosaif.fr");
+        //EditText enventPhoneT = (EditText) findViewById(R.id.eventPhoneNb);
+        //enventPhoneT.setText("0634353637");
     }
 
     public void commitEventInformation(View view){
