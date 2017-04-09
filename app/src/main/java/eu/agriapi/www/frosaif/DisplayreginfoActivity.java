@@ -296,7 +296,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         });
         //requestQueue.add(jsonObjectRequest);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext_dev.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext.php",
                 new Response.Listener<String>()
                 {
                     @Override
