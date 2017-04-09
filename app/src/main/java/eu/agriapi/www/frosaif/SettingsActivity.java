@@ -2,6 +2,7 @@ package eu.agriapi.www.frosaif;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,7 +28,6 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinfos);
 
-
         // creation des menus
         Spinner spinnerRole = (Spinner) findViewById(R.id.uIrole_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -38,8 +38,59 @@ public class SettingsActivity extends Activity {
         // Apply the adapter to the spinner
         spinnerRole.setAdapter(adapterRole);
 
+        String filename = "frosaif.txt";
+
+        try {
+            FileInputStream inStream = openFileInput(filename);
+            InputStreamReader inputStrReader = new InputStreamReader(inStream);
+            BufferedReader bufReader = new BufferedReader(inputStrReader);
+
+            StringBuilder finalString = new StringBuilder();
+            String oneLine;
+
+            while ((oneLine = bufReader.readLine()) != null) {
+                finalString.append(oneLine);
+            }
+
+            bufReader.close();
+            inStream.close();
+            inputStrReader.close();
+            String id = searchKW("ID",finalString.toString());
+            String email = searchKW("EMAIL", finalString.toString());
+            String tel = searchKW("TEL",finalString.toString());
+            String role = searchKW("ROLE",finalString.toString());
+            if(role.contains("Referent") == true) {
+                    spinnerRole.setSelection(1);
+            } else if(role.contains("Societe 3D") == true){
+                    spinnerRole.setSelection(2);
+            } else if(role.contains("Particulier") == true){
+                    spinnerRole.setSelection(3);
+            } else if(role.contains("Service Public") == true){
+                    spinnerRole.setSelection(4);
+            } else if(role.contains("Autre") == true){
+                    spinnerRole.setSelection(5);
+                } else spinnerRole.setSelection(0);
+
+            EditText enventIdT = (EditText) findViewById(R.id.uIIdentification);
+            enventIdT.setText(id);
+            EditText enventEADT = (EditText) findViewById(R.id.uIEmailAddr);
+            enventEADT.setText(email);
+            EditText enventPhoneT = (EditText) findViewById(R.id.uIPhoneNb);
+            enventPhoneT.setText(tel);
+            //Toast.makeText(getApplicationContext(), "id: "+ id + " email: "+ email + " tel: "+ tel +" role: "+role, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    // in inStr string search return toto where str:toto;
+    public String searchKW(String str, String inStr) {
+        int idxStart = inStr.indexOf(str);
+        int idxStop = inStr.indexOf(";", idxStart + str.length() + 1);
+        String ret = inStr.substring(idxStart + str.length() + 1, idxStop);
+        //Toast.makeText(getApplicationContext(), ret, Toast.LENGTH_LONG).show();
+        return ret;
+    }
 
     public void commitUserInfos(View view){
         Spinner spinnerRole = (Spinner) findViewById(R.id.uIrole_spinner);

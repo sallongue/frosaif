@@ -8,10 +8,12 @@
     <string name="user_info_reg">Enregistrer Infos utilisateur</string>
     <string name="about">A propos</string>
     <string name="fileSettings">frosaif.txt</string>
+    <string name="roleStr">Votre Rôle</string>
+    <string name="referentStr">Referent</string>
 
     <string-array name="role_array">
-        <item>Votre Rôle</item>
-        <item>Referent</item>
+        <item>@string/roleStr</item>
+        <item>@string/referentStr</item>
         <item>Societe 3D</item>
         <item>Particulier</item>
         <item>Service Public</item>

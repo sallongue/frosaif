@@ -110,8 +110,6 @@ public class DisplayreginfoActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();  // Always call the superclass method first
 
-
-
         String filename = "frosaif.txt";
 
         try {
@@ -133,13 +131,26 @@ public class DisplayreginfoActivity extends AppCompatActivity {
             String email = searchKW("EMAIL", finalString.toString());
             String tel = searchKW("TEL",finalString.toString());
             String role = searchKW("ROLE",finalString.toString());
+            Spinner spinnerRole = (Spinner) findViewById(R.id.role_spinner);
             EditText enventIdT = (EditText) findViewById(R.id.eventIdentification);
             enventIdT.setText(id);
             EditText enventEADT = (EditText) findViewById(R.id.eventEmailAddr);
             enventEADT.setText(email);
             EditText enventPhoneT = (EditText) findViewById(R.id.eventPhoneNb);
             enventPhoneT.setText(tel);
-            Toast.makeText(getApplicationContext(), "id: "+ id + " email: "+ email + " tel: "+ tel +" role: "+role, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "id: "+ id + " email: "+ email + " tel: "+ tel +" role: "+role, Toast.LENGTH_LONG).show();
+            if(role.contains("Referent") == true) {
+                spinnerRole.setSelection(1);
+            } else if(role.contains("Societe 3D") == true){
+                spinnerRole.setSelection(2);
+            } else if(role.contains("Particulier") == true){
+                spinnerRole.setSelection(3);
+            } else if(role.contains("Service Public") == true){
+                spinnerRole.setSelection(4);
+            } else if(role.contains("Autre") == true){
+                spinnerRole.setSelection(5);
+            } else spinnerRole.setSelection(0);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
