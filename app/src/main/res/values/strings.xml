@@ -36,10 +36,21 @@
 
     <string name="about_text"><![CDATA[
 
-    <br/>Cette application permet de collecter divers informations concernant le frelon asiatique.
-    <br/>Les informations sont a destination de l\'association a des fins d\'analyser de l\'etendu des degats.
+    <br/>La Fédération Régionale des Organisations Sanitaires apicoles d’ile de France a pour objet :
+    <br/> - de fédérer les groupements de défense sanitaire apicoles d’Île de France
+    <br/> - de favoriser, coordonner et promouvoir les actions sanitaires.
+    <br/> - de représenter ses membres auprès des instances administratives et sanitaires
     <br/>
-    <br/>Licence: Ce logiciel est libre d\'utilisation.
+    <br/>Cette application s’inscrit dans le cadre de l\'élaboration et la mise en œuvre d’un plan
+    de lutte régional contre le frelon asiatique vespa velutina nigrithorax avec la FREDON,
+    fédération régionale de défense contre les nuisibles et ses référents frelons départementaux.
+    <br/>Elle permet de signaler divers évènements en lien avec le frelon asiatique.
+    <br/>
+    Elle est fournie telle quelle, sans garantie de fonctionnement. L\’association dégage toute
+    responsabilité.
+    <br/><br/>Vous pouvez trouver de plus amples informations sur le site de l\'association:
+    <br/><br/><A HREF="https://www.frosaif.fr/F/">https://www.frosaif.fr/</A>
+
     ]]>
     </string>
 </resources>

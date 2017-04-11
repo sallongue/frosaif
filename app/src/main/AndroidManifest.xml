@@ -25,9 +25,10 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/vvv"
+        android:icon="@mipmap/frosaif"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
