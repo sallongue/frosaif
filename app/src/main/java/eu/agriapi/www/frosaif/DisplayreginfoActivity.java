@@ -196,7 +196,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
             //Log.w("My Current loction address", "Canont get Address!");
         }
         // On reformatte l'adresse pour remplacer les retours chariot par des espaces
-        EditText enventAddrT = (EditText) findViewById(R.id.eventAddr);
+        TextView enventAddrT = (TextView) findViewById(R.id.eventAddr);
         enventAddrT.setText(evAddrStr);
         //Toast.makeText(getApplicationContext(), strAdd.replaceAll("[\r\n]+", ""), Toast.LENGTH_LONG).show();
 
@@ -228,6 +228,9 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         //enventPhoneT.setText("0634353637");
     }
 
+
+
+
     public void commitEventInformation(View view){
         // one get the information from the user and verify that the field are not empty
         Spinner spinnerEvent = (Spinner) findViewById(R.id.event_spinner);
@@ -242,9 +245,9 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         evEmailStr = eventEMStr.getText().toString();
         TextView eventDetStr = (TextView)findViewById(R.id.eventDetails);
         evDetailStr = eventDetStr.getText().toString();
-        Toast.makeText(getApplicationContext(), evPosLatStr+"\n"+evPosLngStr+"\n"+evAddrStr+"\n"+
-                evIdStr+"\n"+evEmailStr+"\n"+evPhoneStr+"\n"+evRoleStr+"\n"+evEventStr+"\n"+
-                evDetailStr, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), evPosLatStr+"\n"+evPosLngStr+"\n"+evAddrStr+"\n"+
+        //        evIdStr+"\n"+evEmailStr+"\n"+evPhoneStr+"\n"+evRoleStr+"\n"+evEventStr+"\n"+
+        //        evDetailStr, Toast.LENGTH_LONG).show();
         // One HAVE to create async to send information
 
 
@@ -296,7 +299,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         });
         //requestQueue.add(jsonObjectRequest);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext_dev.php",
                 new Response.Listener<String>()
                 {
                     @Override
@@ -314,6 +317,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement", Toast.LENGTH_LONG).show();
                         }
+                        finish();
                     }
                 },
                 new Response.ErrorListener()
