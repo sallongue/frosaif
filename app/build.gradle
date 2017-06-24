@@ -5,12 +5,12 @@ android {
         config {
             keyAlias 'key0'
             keyPassword 'Ben0XUX0;'
-            storeFile file('/Users/Seb/androidKeys/keyForApplis.jks')
+            storeFile file('/Users/galadriel/androidKeys/keyForApplis.jks')
             storePassword 'Ben0XUX0;'
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "eu.agriapi.www.frosaif"
         minSdkVersion 15
