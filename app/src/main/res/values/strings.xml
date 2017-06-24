@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="google_app_id">clever-form-171319</string>
+
     <string name="app_name">frosaif</string>
     <string name="title_activity_maps">Frosaif</string>
     <string name="txt_submit_button">Signalement</string>

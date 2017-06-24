@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -228,7 +229,28 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         //enventPhoneT.setText("0634353637");
     }
 
+    public void composeEmail(String addrUser, String Event, String tag) {
 
+        String mailFrosaif = "contact@frosaif.fr";
+        String subject ="Nouvel évènement enregisté: ";
+        //String[] listStr = {mailFrosaif, addrUser};
+        String[] listStr = {"sebastien.allongue@gmail.com"};
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:"));
+        //Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+        //        "mailto","sebastien.allongue@gmail.com", null));
+        //intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, listStr);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject + Event);
+        intent.putExtra(Intent.EXTRA_TEXT, "Nouvel évènement numéro " + tag +
+                " enregistré depuis l'application android" +"\n");
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        }
+    }
 
 
     public void commitEventInformation(View view){
@@ -305,7 +327,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Log.d("Response", response);
+                        //Log.d("Response", response);
                         if (response.contains("success")){
                             Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
                             int ind = response.indexOf("tag");
@@ -313,10 +335,12 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                             // json response is "tag":"DDD444"
                             // TODO use json object to get the tag value
                             String tagStr = response.substring(ind+6, ind+6+tagLength);
-                            Log.d("mytag ", tagStr);
+                            composeEmail(evEmailStr, evEventStr, tagStr);
+                            //Log.d("mytag ", tagStr);
                         } else {
                             Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement", Toast.LENGTH_LONG).show();
                         }
+
                         finish();
                     }
                 },

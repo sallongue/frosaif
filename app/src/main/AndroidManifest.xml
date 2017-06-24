@@ -44,7 +44,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyAIZkzRIBsrfrDbabWhb2knWPVJQvQMlb4" />
 
         <activity
             android:name=".MapsActivity"
@@ -66,6 +66,16 @@
         <activity
             android:name=".HelpActivity"
             android:label="helpInfo">
+        </activity>
+        <activity
+            android:name=".frosaifSplashScreen"
+            android:label="splscr"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
