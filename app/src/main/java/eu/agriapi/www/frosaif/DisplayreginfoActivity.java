@@ -3,6 +3,8 @@ package eu.agriapi.www.frosaif;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -371,9 +373,24 @@ public class DisplayreginfoActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(postRequest);
+    }
 
+    private static int REQUEST_CODE_CAMERA=2;
+    public void launchTakePic(View view){
+        Intent myIntent = new Intent(this, TakePicActivity.class);
+        startActivityForResult(myIntent, REQUEST_CODE_CAMERA);
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
+            if (data.hasExtra("imagePath")) {
+                Toast.makeText(this, data.getExtras().getString("imagePath"),
+                        Toast.LENGTH_SHORT).show();
+                //Bitmap myThumbnail =
+                //mImageView.setImageBitmap(BitmapFactory.decodeFile(data.getExtras().getString("imagePath")));
+            }
+        }
     }
 
 }

@@ -164,7 +164,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/eventDetails"
+        android:layout_below="@id/eventDetails"
+        android:id="@+id/buttonRegPic"
+        android:layout_centerInParent="true"
+        android:text="Prendre une photo"
+        android:onClick="launchTakePic"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonRegPic"
         android:layout_centerInParent="true"
         android:text="Enregistrer votre Evènement"
         android:onClick="commitEventInformation"/>

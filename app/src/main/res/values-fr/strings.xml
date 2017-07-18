@@ -56,5 +56,7 @@
 
     ]]>
     </string>
-    <string name="permReadNG">Permission to read not granted unable to use camera</string>
+    <string name="prendre_une_photo">Prendre une photo</string>
+    <string name="permReadNG">Permission de lire la carte sd non acceptée, impossible
+        d\'utiliser l\'appareil photo</string>
 </resources>

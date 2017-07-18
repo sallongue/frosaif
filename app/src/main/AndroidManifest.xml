@@ -13,8 +13,8 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
@@ -25,6 +25,12 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!--
+        application can use a camera or camera feature for proper operation, but does not
+        require it, you should specify this in the manifest by including the
+        android:required attribute, and setting it to false
+    -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -45,19 +51,26 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAIZkzRIBsrfrDbabWhb2knWPVJQvQMlb4" />
-
+        <activity
+            android:name=".FrosaifSplScr"
+            android:label="splscr"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".DisplayreginfoActivity"
             android:label="@string/app_name">
+        </activity>
+        <activity android:name=".TakePicActivity"
+            android:label="takePic">
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -66,16 +79,6 @@
         <activity
             android:name=".HelpActivity"
             android:label="helpInfo">
-        </activity>
-        <activity
-            android:name=".frosaifSplashScreen"
-            android:label="splscr"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
     </application>
 
