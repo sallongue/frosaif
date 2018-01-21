@@ -7,6 +7,6 @@ This Android app allows you to report events related to Asian hornets (presence 
 
 https://www.frosaif.fr/F/index.php
 
-Application disponible sur / Google Play / available application
+Application téléchargeable sur / Google Play / downloadable application
 
 https://play.google.com/store/apps/details?id=eu.agriapi.www.frosaif&hl=fr
