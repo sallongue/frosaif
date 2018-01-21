@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 import android.view.Menu;
@@ -20,9 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.media.ThumbnailUtils;
 
 
 import com.android.volley.Request;
@@ -34,15 +37,23 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.appdatasearch.GetRecentContextCall;
 import com.google.android.gms.drive.internal.StringListResponse;
+import com.google.android.gms.location.internal.LocationRequestUpdateData;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +82,9 @@ public class DisplayreginfoActivity extends AppCompatActivity {
     private String evEventStr= new String("");
     private String evDetailStr= new String("");
     private String evEventCode= new String("");
+    private String image= new String("");
+
+    Bitmap photoBitmap = null;
 
     RequestQueue requestQueue;
 
@@ -181,7 +195,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(eventPosition.latitude, eventPosition.longitude, 1);
+            List<Address> addresses = geocoder.getFromLocation(eventPosition.latitude, eventPosition.longitude,1);
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
@@ -274,8 +288,6 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         //        evDetailStr, Toast.LENGTH_LONG).show();
         // One HAVE to create async to send information
 
-
-
         // translate event into code
 
         switch (evEventStr) {
@@ -301,37 +313,73 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                 evEventCode = "INF"; break;
         }
 
-        String addUrl = "http://www.frosaif.fr/zandroid.php";
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                addUrl, null,  new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response){
-                    try{
-                        String status = response.getString("status");
-                        String total = response.getString("total");
-                        Toast.makeText(getApplicationContext(),status + "   " + total, Toast.LENGTH_LONG).show();
-                    } catch (JSONException e){
-                        e.printStackTrace();
+        // TEST BEGIN
+        Log.d("frosaif-debug", "commitEventInformation: ");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OutputStream os = null;
+                InputStream is = null;
+                HttpURLConnection conn = null;
+                try {
+                    //constants
+                    URL url = new URL("http://192.168.0.11/j.php");
+                    Log.d("frosaif-debug", "AaAAAAAAAAAAAAAAAAA");
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("lon", evPosLngStr);
+                    jsonObject.put("lat", evPosLatStr);
+                    jsonObject.put("address",evAddrStr);
+                    jsonObject.put("event", evEventCode);
+                    jsonObject.put("role", evRoleStr);
+                    jsonObject.put("email",evEmailStr);
+                    jsonObject.put("nom", evIdStr);
+                    jsonObject.put("tel", evPhoneStr);
+                    jsonObject.put("details",evDetailStr);
+                    jsonObject.put("image",image);
+                    jsonObject.put("android","1");
+                    if(photoBitmap != null) {
+                        Log.d("frosail-debug", "photo");
+                        jsonObject.put("photo", "photo");
                     }
-                }
-            }, new Response.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError error) {
+                    else{
+                        Log.d("frosail-debug", "nophoto");
+                        jsonObject.put("photo", "nophoto");
+                    }
+                    String message = jsonObject.toString();
 
-                }
-        });
-        //requestQueue.add(jsonObjectRequest);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout( 10000 /*milliseconds*/ );
+                    conn.setConnectTimeout( 15000 /* milliseconds */ );
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setFixedLengthStreamingMode(message.getBytes().length);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://www.frosaif.fr/doitnext_dev.php",
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        //Log.d("Response", response);
-                        if (response.contains("success")){
-                            Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
+                    //make some HTTP header nicety
+                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+                    //open
+                    conn.connect();
+
+                    //setup send
+                    os = new BufferedOutputStream(conn.getOutputStream());
+                    os.write(message.getBytes());
+                    //clean up
+                    os.flush();
+
+                    //do somehting with response
+                    is = conn.getInputStream();
+                    BufferedReader r = new BufferedReader(new InputStreamReader(is));
+                    StringBuilder total = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        total.append(line).append('\n');
+                    }
+                    String response = total.toString();
+                    Log.d("frosaif-debug", response);
+                    if (response.contains("success")){
+                            //Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
                             int ind = response.indexOf("tag");
                             int tagLength = 6;
                             // json response is "tag":"DDD444"
@@ -339,40 +387,108 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                             String tagStr = response.substring(ind+6, ind+6+tagLength);
                             composeEmail(evEmailStr, evEventStr, tagStr);
                             //Log.d("mytag ", tagStr);
+                        Log.d("frosaif-debug", "-------".concat(tagStr));
                         } else {
-                            Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement" + response.toString(), Toast.LENGTH_LONG).show();
                         }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    //clean up
+                    //try {
+                      //  Log.d("frosaif-debug", "BBBBBBBBBBB");
+                      //  os.close();
+                        Log.d("frosaif-debug", "BBBBBBBBBBB");
+                      //  is.close();
+                    //} catch (IOException e) {
+                        //e.printStackTrace();
+                    //}
 
-                        finish();
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                    }
+                    conn.disconnect();
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("lon", evPosLngStr);
-                params.put("lat", evPosLatStr);
-                params.put("address",evAddrStr);
-                params.put("event", evEventCode);
-                params.put("role", evRoleStr);
-                params.put("email",evEmailStr);
-                params.put("nom", evIdStr);
-                params.put("tel", evPhoneStr);
-                params.put("details",evDetailStr);
-                params.put("android","1");
-
-                return params;
             }
-        };
-        requestQueue.add(postRequest);
+        }).start();
+
+
+
+        // ------- TEST END
+
+        //String addUrl = "http://www.frosaif.fr/zandroid.php";
+//        String addUrl = "http://192.168.0.11/i.php";
+//        requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+//                addUrl, null,  new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response){
+//                    try{
+//                        String status = response.getString("status");
+//                        String total = response.getString("total");
+//                        Toast.makeText(getApplicationContext(),status + "   " + total, Toast.LENGTH_LONG).show();
+//                    } catch (JSONException e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }, new Response.ErrorListener(){
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//                }
+//        });
+//        //requestQueue.add(jsonObjectRequest);
+//        //http://www.frosaif.fr/doitnext_dev.php
+//        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.11/i.php",
+//                new Response.Listener<String>()
+//                {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // response
+//                        //Log.d("Response", response);
+//                        if (response.contains("success")){
+//                            Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
+//                            int ind = response.indexOf("tag");
+//                            int tagLength = 6;
+//                            // json response is "tag":"DDD444"
+//                            // TODO use json object to get the tag value
+//                            String tagStr = response.substring(ind+6, ind+6+tagLength);
+//                            composeEmail(evEmailStr, evEventStr, tagStr);
+//                            //Log.d("mytag ", tagStr);
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement" + response.toString(), Toast.LENGTH_LONG).show();
+//                        }
+//
+//                        finish();
+//                    }
+//                },
+//                new Response.ErrorListener()
+//                {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // error
+//                        Toast.makeText(getApplicationContext(), "Erreur volley", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//        ) {
+//            @Override
+//            protected Map<String, String> getParams()
+//            {
+//                Map<String, String>  params = new HashMap<String, String>();
+//                params.put("lon", evPosLngStr);
+//                params.put("lat", evPosLatStr);
+//                params.put("address",evAddrStr);
+//                params.put("event", evEventCode);
+//                params.put("role", evRoleStr);
+//                params.put("email",evEmailStr);
+//                params.put("nom", evIdStr);
+//                params.put("tel", evPhoneStr);
+//                params.put("details",evDetailStr);
+//                params.put("android","1");
+//
+//                return params;
+//            }
+//        };
+//        requestQueue.add(postRequest);
     }
 
     private static int REQUEST_CODE_CAMERA=2;
@@ -387,10 +503,24 @@ public class DisplayreginfoActivity extends AppCompatActivity {
             if (data.hasExtra("imagePath")) {
                 Toast.makeText(this, data.getExtras().getString("imagePath"),
                         Toast.LENGTH_SHORT).show();
+                ImageView mImageView = (ImageView) findViewById(R.id.thumbPic);
+                photoBitmap = BitmapFactory.decodeFile(data.getExtras().getString("imagePath"));
+                mImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(data.getExtras().getString("imagePath")), 50, 50));
                 //Bitmap myThumbnail =
                 //mImageView.setImageBitmap(BitmapFactory.decodeFile(data.getExtras().getString("imagePath")));
+                image = getStringImage(photoBitmap);
+                Log.d("image",image);
+                
             }
         }
+    }
+
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 
 }

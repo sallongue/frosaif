@@ -13,6 +13,7 @@
     <string name="fileSettings">frosaif.txt</string>
     <string name="roleStr">Votre Rôle</string>
     <string name="referentStr">Referent</string>
+    <string name="evtReg">Enregistrer un évènement</string>
 
     <string-array name="role_array">
         <item>@string/roleStr</item>

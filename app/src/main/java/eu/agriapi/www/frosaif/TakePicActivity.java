@@ -34,7 +34,7 @@ public class TakePicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_takepic);
+        //setContentView(R.layout.activity_takepic);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -61,6 +61,16 @@ public class TakePicActivity extends AppCompatActivity {
                 // result of the request.
             }
         }
+
+        Intent takePicIntent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePicIntent.resolveActivity(getPackageManager()) != null) {
+            mLAstPhotoUri = createFileUri();
+            Log.d("++++++++++", mLAstPhotoUri.toString());
+            takePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, mLAstPhotoUri);
+            startActivityForResult(takePicIntent, PHOTO_RESULT);
+        }
+        Log.d("----------------", "par la");
     }
 
     private Uri createFileUri() {
@@ -84,13 +94,14 @@ public class TakePicActivity extends AppCompatActivity {
         Log.d("----------------", "par la");
     }
 
-    @Override
+    //@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent Data) {
-        mImageView = (ImageView) findViewById(R.id.imgTakePic);
+        /*mImageView = (ImageView) findViewById(R.id.imgTakePic);
 
         if (requestCode == PHOTO_RESULT && resultCode == RESULT_OK) {
             mImageView.setImageBitmap(BitmapFactory.decodeFile(mLAstPhotoUri.getPath()));
-        }
+        }*/
+        this.finish();
     }
 
     @Override

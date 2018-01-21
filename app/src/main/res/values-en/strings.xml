@@ -2,4 +2,5 @@
 <resources>
     <string name="prendre_une_photo">Take a picture</string>
     <string name="permReadNG">Permission to read external storage not granted unable to use camera</string>
+    <string name="evtReg">Register an event</string>
 </resources>

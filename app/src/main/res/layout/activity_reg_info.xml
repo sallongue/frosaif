@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/eventPageName"
-        android:text="Enregistrer un évènement"
+        android:text="@string/evtReg"
         android:gravity="center"
         android:textStyle="bold"
         android:layout_width="fill_parent"
@@ -169,6 +169,14 @@
         android:layout_centerInParent="true"
         android:text="Prendre une photo"
         android:onClick="launchTakePic"/>
+    <ImageView
+        android:id="@+id/thumbPic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/buttonRegPic"
+        android:layout_below="@id/eventDetails"
+        android:layout_centerInParent="true"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
