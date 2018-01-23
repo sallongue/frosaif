@@ -324,7 +324,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                 try {
                     //constants
                     URL url = new URL("http://192.168.0.11/j.php");
-                    Log.d("frosaif-debug", "AaAAAAAAAAAAAAAAAAA");
+                    Log.d("frosaif-debug", "Start remplissage du json");
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("lon", evPosLngStr);
                     jsonObject.put("lat", evPosLatStr);
@@ -335,11 +335,11 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                     jsonObject.put("nom", evIdStr);
                     jsonObject.put("tel", evPhoneStr);
                     jsonObject.put("details",evDetailStr);
-                    jsonObject.put("image",image);
                     jsonObject.put("android","1");
                     if(photoBitmap != null) {
                         Log.d("frosail-debug", "photo");
                         jsonObject.put("photo", "photo");
+                            jsonObject.put("image", image);
                     }
                     else{
                         Log.d("frosail-debug", "nophoto");
@@ -348,8 +348,8 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                     String message = jsonObject.toString();
 
                     conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout( 10000 /*milliseconds*/ );
-                    conn.setConnectTimeout( 15000 /* milliseconds */ );
+                    conn.setReadTimeout( 1000000000 /*milliseconds*/ );
+                    conn.setConnectTimeout( 1500000000 /* milliseconds */ );
                     conn.setRequestMethod("POST");
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
@@ -387,7 +387,7 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                             String tagStr = response.substring(ind+6, ind+6+tagLength);
                             composeEmail(evEmailStr, evEventStr, tagStr);
                             //Log.d("mytag ", tagStr);
-                        Log.d("frosaif-debug", "-------".concat(tagStr));
+                            Log.d("frosaif-debug", "-------".concat(tagStr));
                         } else {
                             //Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement" + response.toString(), Toast.LENGTH_LONG).show();
                         }
