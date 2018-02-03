@@ -59,9 +59,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-// Rajouter un toast au cas ou le réseau ne soit pas dispo et indiquer qu'il faut le rsx
-// en pluson pourrait avoir une sauvegarde d'un point en cas de zone hors connexion
-// pour un enregistrement plus tard
+// TODO Rajouter un toast au cas ou le réseau ne soit pas dispo et indiquer qu'il faut le rsx
+// TODO en pluson pourrait avoir une sauvegarde d'un point en cas de zone hors connexion
+// TODO pour un enregistrement plus tard
 
 /**
  * Created by Seb on 16/02/2017.
@@ -85,6 +85,8 @@ public class DisplayreginfoActivity extends AppCompatActivity {
     private String image= new String("");
 
     Bitmap photoBitmap = null;
+
+    ImageView mImageView;
 
     RequestQueue requestQueue;
 
@@ -323,8 +325,16 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                 HttpURLConnection conn = null;
                 try {
                     //constants
-                    URL url = new URL("http://192.168.0.11/j.php");
-                    Log.d("frosaif-debug", "Start remplissage du json");
+                    URL url;
+                    if(BuildConfig.DEBUG){
+                        url = new URL("http://192.168.0.11/j.php");
+                    }
+                    else {
+                        url = new URL("http://www.frosaif.fr/zandroid.php");
+                    }
+                    if(BuildConfig.DEBUG) {
+                        Log.d("frosaif-debug", "Start remplissage du json");
+                    }
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("lon", evPosLngStr);
                     jsonObject.put("lat", evPosLatStr);
@@ -377,7 +387,9 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                         total.append(line).append('\n');
                     }
                     String response = total.toString();
-                    Log.d("frosaif-debug", response);
+                    if(BuildConfig.DEBUG){
+                        Log.d("frosaif-debug", response);
+                    }
                     if (response.contains("success")){
                             //Toast.makeText(getApplicationContext(), "Evènement enregistré avec succès", Toast.LENGTH_LONG).show();
                             int ind = response.indexOf("tag");
@@ -386,26 +398,19 @@ public class DisplayreginfoActivity extends AppCompatActivity {
                             // TODO use json object to get the tag value
                             String tagStr = response.substring(ind+6, ind+6+tagLength);
                             composeEmail(evEmailStr, evEventStr, tagStr);
-                            //Log.d("mytag ", tagStr);
-                            Log.d("frosaif-debug", "-------".concat(tagStr));
+                            if(BuildConfig.DEBUG){
+                                Log.d("frosaif-debug", "-------".concat(tagStr));
+                            }
                         } else {
-                            //Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement" + response.toString(), Toast.LENGTH_LONG).show();
-                        }
+                            if(BuildConfig.DEBUG){
+                                Toast.makeText(getApplicationContext(), "Erreur dans l'enregistrement" + response.toString(), Toast.LENGTH_LONG).show();
+                            }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
-                    //clean up
-                    //try {
-                      //  Log.d("frosaif-debug", "BBBBBBBBBBB");
-                      //  os.close();
-                        Log.d("frosaif-debug", "BBBBBBBBBBB");
-                      //  is.close();
-                    //} catch (IOException e) {
-                        //e.printStackTrace();
-                    //}
-
                     conn.disconnect();
                 }
             }
@@ -501,16 +506,22 @@ public class DisplayreginfoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
             if (data.hasExtra("imagePath")) {
-                Toast.makeText(this, data.getExtras().getString("imagePath"),
-                        Toast.LENGTH_SHORT).show();
-                ImageView mImageView = (ImageView) findViewById(R.id.thumbPic);
+                if(BuildConfig.DEBUG) {
+                    Toast.makeText(this, data.getExtras().getString("imagePath"),
+                            Toast.LENGTH_SHORT).show();
+                }
+                mImageView = (ImageView) findViewById(R.id.thumbPic);
+                mImageView.setVisibility(View.VISIBLE);
                 photoBitmap = BitmapFactory.decodeFile(data.getExtras().getString("imagePath"));
                 mImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(data.getExtras().getString("imagePath")), 50, 50));
                 //Bitmap myThumbnail =
                 //mImageView.setImageBitmap(BitmapFactory.decodeFile(data.getExtras().getString("imagePath")));
-                image = getStringImage(photoBitmap);
-                Log.d("image",image);
-                
+                if(photoBitmap != null) {
+                    image = getStringImage(photoBitmap);
+                    if (BuildConfig.DEBUG) {
+                        Log.d("image", image);
+                    }
+                }
             }
         }
     }
@@ -523,6 +534,11 @@ public class DisplayreginfoActivity extends AppCompatActivity {
         return encodedImage;
     }
 
+    public void launchDelPic(View view) {
+        // remove the picture
+        mImageView.setVisibility(View.GONE);
+        photoBitmap = null;
+    }
 }
 
 
